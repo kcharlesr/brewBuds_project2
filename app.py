@@ -6,38 +6,57 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine, func, inspect, MetaData, Table, Column, Integer, String, Float, cast
 
 from flask import Flask, jsonify
 
 #########################
 # Database Setup
 #########################
-#ENGINE #1
-engine1 = create_engine("sqlite:///./Resources/hawaii.sqlite", echo=False)
+#ENGINE
+engine = create_engine("sqlite:///brewBuds.sqlite", echo=False)
+
+#BUILD THE TABLES
+metadata = MetaData()
+Table('brewery', metadata,
+     Column('Index', Integer, primary_key = True),
+     Column('City', String),
+     Column('Latitude',Float),
+     Column('Longitude',Float),
+     Column('Name',String),
+     Column('PostalCode',Integer),
+     Column('State', String))
+
+Table('starbucks', metadata,
+     Column('Index', Integer, primary_key = True),
+     Column('State', String),
+     Column('PostalCode',Integer),
+     Column('Longitude',Float),
+     Column('Latitude',Float)
+     )
+
+Table('income', metadata,
+     Column('Index', Integer, primary_key = True),
+     Column('PostalCode',Integer),
+     Column('Median_Income',Float),
+     Column('Population',Float),
+     Column('Median_age',Float), 
+     Column('Keydemo_per',Float)
+     )
 
 # reflect an existing database into a new model
-Base1 = automap_base()
+Base = automap_base(metadata=metadata)
+# reflect the tables
+#Base.prepare()
 
 #reflect the tables
-Base1.prepare(engine1, reflect=True)
+Base.prepare(engine, reflect=True)
 
 #save reference to  the tables
-Starbucks = Base1.classes.starbucks
+starbucks = Base.classes.starbucks
+income = Base.classes.income
+brewery = Base.classes.brewery
 
-
-# #ENGINE 2
-# engine2 = create_engine("sqlite:///./Resources/hawaii.sqlite", echo=False)
-
-# # reflect an existing database into a new model
-# Base2 = automap_base()
-
-# #reflect the tables
-# Base2.prepare(engine2, reflect=True)
-
-# #save reference to  the tables
-# Measurement = Base.classes.measurement
-# Station = Base.classes.station
 ##########################
 #Flask Setup
 ##########################
@@ -54,7 +73,7 @@ def index():
     return(
         f"Home Base!<br/>"
         f"Available routes:<br/>"
-        f"Defining the Starbucks Standard:  /api/v1.0/precipitation<br/>"
+        f"Breweries per Zip Code:  /api/v1.0/brew_zip<br/>"
         f"Defining the Brewery Standard: /api/v1.0/stations<br/>"
         f"Map: Recommended places' population:  /api/v1.0/tobs<br/>"
         f"Map: Recommended places' median income  /api/v1.0/YYYY-MM-DD<start><br/>"
@@ -62,27 +81,26 @@ def index():
         f"Map: Existing Breweries for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
         )
 
-# @app.route("/api/v1.0/brewery_standard")
-# def precip():
-#     session = Session(engine)
-#     year_ago = dt.date(2017,8,23) - dt.timedelta(days=365)
-#     results = session.query(Measurement.date, Measurement.prcp)\
-#         .filter(Measurement.date >= year_ago).all()
-#     session.close()
+@app.route("/api/v1.0/brew_zip")
+def brew_zip():
+    session = Session(engine)
+    brew_count_zip = session.query(brewery.PostalCode, func.count(brewery.Name)).\
+        group_by(brewery.PostalCode).\
+        order_by(func.count(brewery.Name).desc()).all()
+    session.close()
  
-#     #Convert the query results to a dictionary using `date` as the key and `prcp` as the value.
-#     all_results = []
+    #Convert the query results to a dictionary using `PostalCode` as the key and `count` as the value.
+    all_results = []
    
-#     for date, prcp in results:
-#         prcp_dict = {}
-#         prcp_dict["date"] = date
-#         #prcp_dict[0] = int(date)
-#         prcp_dict["prcp"] = prcp
-#         all_results.append(prcp_dict)
-    
-
-#     #Return the JSON representation of your dictionary.
-#     return jsonify(all_results)
+    for pc, count in brew_count_zip:
+        pc_dict = {}
+        pc_dict["zip_code"] = pc
+        #prcp_dict[0] = int(date)
+        pc_dict["count"] = count
+        all_results.append(pc_dict)
+ 
+     #Return the JSON representation of your dictionary.
+    return jsonify(all_results)
 
 # @app.route("/api/v1.0/Starbucks_standard")
 # def stations():
@@ -94,16 +112,16 @@ def index():
 #     active_stations = list(np.ravel(results))
     
 #     return jsonify(active_stations)
-@app.route("/api/v1.0/Existing_Starbucks")
-def stations():
-    #Return a JSON list of Starbucks from the dataset.
-    session = Session(engine)
-    results = session.query(Measurement.station).distinct().all()
-    session.close()
+# @app.route("/api/v1.0/Existing_Starbucks")
+# def stations():
+#     #Return a JSON list of Starbucks from the dataset.
+#     session = Session(engine)
+#     results = session.query(Measurement.station).distinct().all()
+#     session.close()
 
-    active_stations = list(np.ravel(results))
+#     active_stations = list(np.ravel(results))
     
-    return jsonify(active_stations)
+#     return jsonify(active_stations)
 
 
 # @app.route("/api/v1.0/tobs")
