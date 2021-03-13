@@ -126,7 +126,7 @@ function makeResponsive() {
             .text("Population Per Brewery");
       
       legendColors = ['#0000ff','#1a0fe6', '#331fcc','#4c2eb2','#663d99', '#4c2eb2', '#663d99', '#a66359', '#bf7340', '#d98226', '#f2910d', '#ff9900'];
-      legendText = [': >$200,000', ": >$170,000", ": >$150,000", ": >$140,000", ": >$130,000", ": >$120,00", ": >$110,000", ": >$100,000", ": >$90,000", ": >$80,000", ": >$70,000", ": <$70,000"]
+      legendText = [': >$200,000', ": >$170,000", ": >$150,000", ": >$140,000", ": >$130,000", ": >$120,000", ": >$110,000", ": >$100,000", ": >$90,000", ": >$80,000", ": >$70,000", ": <$70,000"]
 
       var legend = svg.append("g")
             .attr("transform", `translate(${margin.right}, ${margin.top})`)
@@ -134,24 +134,30 @@ function makeResponsive() {
             .attr("height", 2000)
             .attr("width", 200)
           
-          legend.selectAll('g')
-            .enter()
-            .append("g")
+          svg.append('g')
             .attr("transform", `translate(${margin.right}, ${margin.top})`)
             .append("text")
+            .attr("x", width- 25)
+            .attr("y", 0)
             .attr('text-anchor', 'middle')
             .attr("font-size", "10px")
             .classed("active", true)
             .text("Median Income ($)");
+          
+          svg.append('g')
+            .attr("x", width- 25)
+            .attr("y", 0)
+            .style("stroke", "lightgreen")
+            .style("stroke-width", 10);
           
           legend.selectAll("rect")
             .data(legendColors)
             .enter()
             .append("rect")
             .attr("x", width - 65)
-            .attr("y", function(d,i) { return i*20; })
-            .attr("width", 15)
-            .attr("height", 15)
+            .attr("y", function(d,i) { return i*20 + 10 })
+            .attr("width", 17)
+            .attr("height", 17)
             .style("fill", function(d, i) { return legendColors[i]});
           
           legend.selectAll("text")
@@ -159,7 +165,7 @@ function makeResponsive() {
             .enter()
             .append("text")
             .attr("x", width - 45)
-            .attr("y", function(d,i) { return i*20 + 11; })
+            .attr("y", function(d,i) { return i*20 + 23; })
             .text(function(d, i) { return legendText[i]});
 
             // Create toolTip
