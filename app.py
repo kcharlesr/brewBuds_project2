@@ -1,3 +1,4 @@
+
 #design a Flask API based on the queries that you have just developed.
 import datetime as dt
 import numpy as np
@@ -8,7 +9,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, inspect, MetaData, Table, Column, Integer, String, Float, cast
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 #########################
 # Database Setup
@@ -89,15 +90,29 @@ app=Flask(__name__)
 #List all routes available
 @app.route("/")
 def index():
-    return(
-        f"Home Base!<br/>"
-        f"Available routes:<br/>"
-        f"Top 100 Zip Codes:  /api/v1.0/top_zips<br/>"
-        f"Breweries in Top 100 Zip Codes: /api/v1.0/breweries<br/>"
-        f"Demographics in Top 100 Zip Codes:  /api/v1.0/demo<br/>"
-        f"Existing Starbucks in Top 100 Zip Codes:  /api/v1.0/starbucks<br/>"
-        # f"Map: Existing Breweries for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
-        )
+    return render_template('index.html')
+    # ( 
+    #     f"Home Base!<br/>"
+    #     f"Available routes:<br/>"
+    #     f"Breweries per Zip Code:  /api/v1.0/brew_zip<br/>"
+    #     f"Defining the Brewery Standard: /api/v1.0/stations<br/>"
+    #     f"Map: Recommended places' population:  /api/v1.0/tobs<br/>"
+    #     f"Map: Recommended places' median income  /api/v1.0/YYYY-MM-DD<start><br/>"
+    #     f"Map: Existing Starbucks for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
+    #     f"Map: Existing Breweries for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
+    #     )
+@app.route("/map")
+def leaflet():
+    return render_template('leaflet.html')
+
+@app.route("/scatter")
+def scatter():
+    return render_template('scatter.html')
+
+
+@app.route("/data")
+def data():
+    return render_template('data.html')
 
 @app.route("/api/v1.0/brew_zip")
 def brew_zip():
@@ -228,5 +243,3 @@ def bucks():
     
 if __name__ == '__main__':
     app.run(debug = True)
-
-

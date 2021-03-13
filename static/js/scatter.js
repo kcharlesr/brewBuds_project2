@@ -41,7 +41,7 @@ function makeResponsive() {
     var xLabelHeight = svgHeight -100;
     
     
-    d3.csv('/brewBuds_project2/income_data/Top100_zip.csv').then(function(zipdata){
+    d3.csv("/static/Top100_zip.csv").then(function(zipdata){
         zipdata.forEach(function(data) {
             data.Median_Income = +data.Median_Income;
             data.Keydemo_per = +data.Keydemo_per * 100;
@@ -50,6 +50,7 @@ function makeResponsive() {
             data.Population = +data.Population
             console.log(data.Median_Income)
         });
+
         
         function getColor(d) {
           return d > 200000 ? '#0000ff' :

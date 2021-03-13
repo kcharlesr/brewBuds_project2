@@ -13,14 +13,14 @@
     crossorigin="" />
 <!--  -->
   <!-- Our CSS -->
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" href="css/d3Style.css">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/d3Style.css') }}">
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light p-0">
     <div class="d-flex flex-grow-1">
-        <a class="p-3 ml-3 navbar-brand text-light" href="index.html">
+        <a class="p-3 ml-3 navbar-brand text-light" href="/">
             <h4>Brew Buds</h4>
         </a>
         <div class="w-100 m-2 text-right">
@@ -36,12 +36,12 @@
                   Visualizations
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="leaflet.html">Interactive Map</a>
-                  <a class="dropdown-item" href="scatter.html">Scatter Plot</a>
+                  <a class="dropdown-item" href="/map">Interactive Map</a>
+                  <a class="dropdown-item" href="/scatter">Scatter Plot</a>
                 </div>
             </li>
             <li class="nav-item">
-                <a href="data.html" class="nav-link m-2 menu-item">Data</a>
+                <a href="/data" class="nav-link m-2 menu-item">Data</a>
             </li>
         </ul>
     </div>
@@ -68,7 +68,7 @@
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js" integrity="sha512-wNH6xsp2n8CfB91nrBtfc4sfLwYPBMjSWVUwQOp60AYYXH6i8yCwuKFZ4rgK2i6pQek/b+bSyR7b01/922IBzQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
-<script type="text/javascript" src="scatter.js"></script>
+<script type="text/javascript" src="../static/js/scatter.js"></script>
 
 </body>
 
