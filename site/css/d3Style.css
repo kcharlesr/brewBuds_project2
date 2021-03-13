@@ -30,8 +30,7 @@
   text-anchor: middle;
 }
 
-.stateCircle {
-  fill: #89bdd3;
+.zipCircle {
   stroke: #e3e3e3;
 }
 
@@ -50,6 +49,14 @@
   text-transform: capitalize;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 4px;
+}
+
+.legend {
+  padding: 5px;
+  font: 12px sans-serif;
+  width:90px;
+  height: 110px;
+  box-shadow: 2px 2px 1px #888;
 }
 
 /* Mobile Rules */
