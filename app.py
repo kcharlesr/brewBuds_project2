@@ -95,7 +95,7 @@ def index():
         f"Top 100 Zip Codes:  /api/v1.0/top_zips<br/>"
         f"Breweries in Top 100 Zip Codes: /api/v1.0/breweries<br/>"
         f"Demographics in Top 100 Zip Codes:  /api/v1.0/demo<br/>"
-        f"Existing Starbucks in Top 100 Zip Codes:  /api/v1.0/starbucks>"
+        f"Existing Starbucks in Top 100 Zip Codes:  /api/v1.0/starbucks<br/>"
         # f"Map: Existing Breweries for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
         )
 
@@ -198,103 +198,34 @@ def demographics():
 
 
 @app.route("/api/v1.0/starbucks")
-def starbucks():
+def bucks():
     session =Session(engine)
     top_zips = session.query(top100.PostalCode)
     top_zip_list = []
     for i in top_zips:
         top_zip_list.append(i[0])
     starbucks_coord =session.query(starbucks.PostalCode, starbucks.Latitude, starbucks.Longitude).\
-    order_by(starbucks.PostalCode).\
-    filter(starbucks.PostalCode.in_(top_zip_list)).\
-    filter(starbucks.PostalCode == top100.PostalCode).all()
+        order_by(starbucks.PostalCode).\
+        filter(starbucks.PostalCode.in_(top_zip_list)).\
+        filter(starbucks.PostalCode == top100.PostalCode).all()
     session.close()
-
     sbucks_geo = {
     "type": "FeatureCollection",
      "features": []
-}
-for i in starbucks_coord:
-    feature = {"type": "Feature",
-              "geometry":{
-                  "type": "Point",
-                  "coordinates":[i[2], i[1]]
-              },
-              "properties":{
-                  "zipcode":i[0]
-              }
-              }
-    sbucks_geo["features"].append(feature)
+        }
+    for i in starbucks_coord:
+        feature = {"type": "Feature",
+                "geometry":{
+                    "type": "Point",
+                    "coordinates":[i[2], i[1]]
+                },
+                "properties":{
+                    "zipcode":i[0]
+                }
+                }
+        sbucks_geo["features"].append(feature)
     return jsonify(sbucks_geo)
-# @app.route("/api/v1.0/Starbucks_standard")
-# def stations():
-#     #Return a JSON list of stations from the dataset.
-#     session = Session(engine)
-#     results = session.query(Measurement.station).distinct().all()
-#     session.close()
-
-#     active_stations = list(np.ravel(results))
     
-#     return jsonify(active_stations)
-# @app.route("/api/v1.0/Existing_Starbucks")
-# def stations():
-#     #Return a JSON list of Starbucks from the dataset.
-#     session = Session(engine)
-#     results = session.query(Measurement.station).distinct().all()
-#     session.close()
-
-#     active_stations = list(np.ravel(results))
-    
-#     return jsonify(active_stations)
-
-
-# @app.route("/api/v1.0/tobs")
-# def tobs():
-#     # Query the dates and temperature observations of the most active station for the last year of data.
-#    session=Session(engine)
-#    year_ago = dt.date(2017,8,23) - dt.timedelta(days=365)
-#    most_active_station = session.query(Measurement.station, func.count(Measurement.station))\
-#         .filter(Measurement.date >= year_ago)\
-#         .group_by(Measurement.station)\
-#         .order_by(func.count(Measurement.station).desc()).first()
-#    temps = session.query(Measurement.tobs)\
-#         .filter(Measurement.station == most_active_station[0])\
-#         .filter(Measurement.date >= year_ago).all()
-#    session.close()
-#    # Return a JSON list of temperature observations (TOBS) for the previous year.
-#    return_temps = [result[0] for result in temps]
-#    return jsonify(return_temps)
-
-#  # Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range.
-
-#   # When given the start only, calculate `TMIN`, `TAVG`, and `TMAX` for all dates greater than and equal to the start date.
-
-#   # When given the start and the end date, calculate the `TMIN`, `TAVG`, and `TMAX` for dates between the start and end date inclusive.
-# @app.route("/api/v1.0/<start>")
-# def start(start):
-#     if len(start) == 10: 
-#         session=Session(engine)
-#         results = session.query(func.min(Measurement.tobs),func.avg(Measurement.tobs),func.max(Measurement.tobs))\
-#             .filter(Measurement.date >= start).all()
-#         session.close()
-#         return jsonify(results)
-    
-#     return jsonify({"error": f"{start} is not in valid date format.  Please try again with format YYYY-MM-DD."}),404
-
-# @app.route("/api/v1.0/<start>/<end>")
-# def start_end(start, end):
-#     if len(start) == 10 and len(end) == 10: 
-#         session=Session(engine)
-#         results = session.query(func.min(Measurement.tobs),func.avg(Measurement.tobs),func.max(Measurement.tobs))\
-#             .filter(Measurement.date >= start)\
-#             .filter(Measurement.date <= end).all()
-#         session.close()
-#         return jsonify(results)
-    
-#     return jsonify({"error": f"{start} or {end} is not in valid date format.  Please try again with format YYYY-MM-DD."}),404
-    
- 
-
 if __name__ == '__main__':
     app.run(debug = True)
 
