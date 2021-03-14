@@ -13,7 +13,7 @@ nav{
 }
 
 .imgs{
-  height:auto;
+  height: auto;
   max-width: 100%;
 }
 
@@ -64,13 +64,16 @@ html {
 
 }
 .center {
-  margin: 0 auto;
-  width: 1000px;
+  /* margin: 3 auto; */
+  margin-left: 30px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  max-width:fit-content;
 }
 
 /* The width of each slide */
 .slick-slide {
-  width: 350px;
+  width: 1px;
 }
 
 /* Color of the arrows */
@@ -78,7 +81,7 @@ html {
   color: turquoise;
 }
 
-img {
+.slider img {
   width: 320px;
   height: 240px;
 }

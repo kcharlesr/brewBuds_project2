@@ -15,7 +15,8 @@ from flask import Flask, jsonify, render_template
 # Database Setup
 #########################
 #ENGINE
-engine = create_engine("sqlite:///brewBuds.sqlite", echo=False)
+engine = create_engine(r'sqlite:///C:\Users\perki\Desktop\brewBuds_project2\brewBuds.sqlite', echo=False)
+
 
 #BUILD THE TABLES
 metadata = MetaData()
@@ -65,7 +66,7 @@ Table('top100', metadata,
      )
 
 # reflect an existing database into a new model
-Base = automap_base(metadata=metadata)
+Base = automap_base(metadata = metadata)
 # reflect the tables
 #Base.prepare()
 
@@ -81,7 +82,7 @@ top100= Base.classes.top100
 #Flask Setup
 ##########################
 #initialize Flask app
-app=Flask(__name__)
+app = Flask(__name__)
 
 #########################
 #Flask Routes
@@ -91,16 +92,7 @@ app=Flask(__name__)
 @app.route("/")
 def index():
     return render_template('index.html')
-    # ( 
-    #     f"Home Base!<br/>"
-    #     f"Available routes:<br/>"
-    #     f"Breweries per Zip Code:  /api/v1.0/brew_zip<br/>"
-    #     f"Defining the Brewery Standard: /api/v1.0/stations<br/>"
-    #     f"Map: Recommended places' population:  /api/v1.0/tobs<br/>"
-    #     f"Map: Recommended places' median income  /api/v1.0/YYYY-MM-DD<start><br/>"
-    #     f"Map: Existing Starbucks for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
-    #     f"Map: Existing Breweries for Recommended Places:  /api/v1.0/YYYY-MM-DD<start>/YYYY-MM-DD<end>"
-    #     )
+   
 @app.route("/map")
 def leaflet():
     return render_template('leaflet.html')
@@ -243,3 +235,4 @@ def bucks():
     
 if __name__ == '__main__':
     app.run(debug = True)
+
