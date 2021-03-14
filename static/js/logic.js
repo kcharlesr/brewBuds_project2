@@ -10,7 +10,7 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/
 // Initialize all of the LayerGroups we'll be using
 var layers = {
   brewery: new L.LayerGroup(),
-  // starbucks: new L.LayerGroup(),
+  starbucks: new L.LayerGroup(),
   // zipcodes: new L.LayerGroup()
 };
 
@@ -20,7 +20,7 @@ var map = L.map("map", {
   zoom: 5,
   layers: [
     layers.brewery,
-    // layers.starbucks,
+    layers.starbucks,
     // layers.zipcodes
   ]
 });
@@ -31,7 +31,7 @@ lightmap.addTo(map);
 // Create an overlays object to add to the layer control
 var overlays = {
   "Brewery": layers.brewery,
-  // "Starbucks": layers.starbucks,
+  "Starbucks": layers.starbucks,
   // "Zip Codes": layers.zipcodes
 };
 
@@ -45,12 +45,12 @@ var icons = {
     markerColor: "blue",
     shape: "cirlce"
   }),
-  // starbucks: L.ExtraMarkers.icon({
-  //   icon: "ion-cafe",
-  //   iconColor: "white",
-  //   markerColor: "green",
-  //   shape: "circle"
-  // }),
+  starbucks: L.ExtraMarkers.icon({
+    icon: "ion-coffee",
+    iconColor: "white",
+    markerColor: "green",
+    shape: "circle"
+  }),
   // zipcodes: L.ExtraMarkers.icon({
   //   icon: "ion-home",
   //   iconColor: "white",
@@ -69,20 +69,39 @@ d3.json("http://127.0.0.1:5000/api/v1.0/breweries", function(data) {
 
       var location = breweryData[i].geometry
       var name = breweryData[i].properties
+      var brewery = "brewery"
       // Create a new marker with the appropriate icon and coordinates
       var newMarker = L.marker([location.coordinates[1], location.coordinates[0]], {
-        icon: icons["brewery"]
+        icon: icons[brewery]
       });
 
       // Add the new marker to the appropriate layer
       newMarker.addTo(layers[brewery]);
 
       // Bind a popup to the marker that will  display on click. This will be rendered as HTML
-      newMarker.bindPopup(`<h2>${name.name}`);
+      newMarker.bindPopup(`<h5>${name.name}</h5>`);
     }
 
     // Call the updateLegend function, which will... update the legend!
   });
 
+  d3.json("http://127.0.0.1:5000/api/v1.0/starbucks", function(data) {
+    console.log(data);
+    var starbucksData = data.features;
 
+    // Loop through the stations (they're the same size and have partially matching data)
+    for (var i = 0; i < starbucksData.length; i++) {
+
+      var location = starbucksData[i].geometry
+      var name = starbucksData[i].properties
+      var starbucks= "starbucks"
+      // Create a new marker with the appropriate icon and coordinates
+      var newMarker = L.marker([location.coordinates[1], location.coordinates[0]], {
+        icon: icons[starbucks]
+      });
+
+      // Add the new marker to the appropriate layer
+      newMarker.addTo(layers[starbucks]);
+    }
+  });
 
