@@ -11,7 +11,7 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/
 var layers = {
   brewery: new L.LayerGroup(),
   starbucks: new L.LayerGroup(),
-  // zipcodes: new L.LayerGroup()
+  zipcodes: new L.LayerGroup()
 };
 
 // Create the map with our layers
@@ -21,7 +21,7 @@ var map = L.map("map", {
   layers: [
     layers.brewery,
     layers.starbucks,
-    // layers.zipcodes
+    layers.zipcodes
   ]
 });
 
@@ -32,7 +32,7 @@ lightmap.addTo(map);
 var overlays = {
   "Brewery": layers.brewery,
   "Starbucks": layers.starbucks,
-  // "Zip Codes": layers.zipcodes
+  "Zip Codes": layers.zipcodes
 };
 
 L.control.layers(null, overlays).addTo(map);
@@ -51,12 +51,12 @@ var icons = {
     markerColor: "green",
     shape: "circle"
   }),
-  // zipcodes: L.ExtraMarkers.icon({
-  //   icon: "ion-home",
-  //   iconColor: "white",
-  //   markerColor: "red",
-  //   shape: "circle"
-  // })
+  zipcodes: L.ExtraMarkers.icon({
+    icon: "ion-home",
+    iconColor: "white",
+    markerColor: "red",
+    shape: "circle"
+  })
 };
 
 // Perform an API call to the Citi Bike Station Information endpoint
@@ -105,3 +105,82 @@ d3.json("http://127.0.0.1:5000/api/v1.0/breweries", function(data) {
     }
   });
 
+  d3.json("/static/zips.json", function(zipdata){
+      console.log(zipdata)
+      for (var i = 0; i < zipdata.length; i++) {
+        var location = zipdata[i]
+        var zipcodes= "zipcodes"
+        // Create a new marker with the appropriate icon and coordinates
+        var newMarker = L.marker([location.coordinates[0], location.coordinates[1]], {
+          icon: icons[zipcodes]
+       });
+
+      // Add the new marker to the appropriate layer
+        newMarker.addTo(layers[zipcodes])
+        newMarker.bindPopup(`<h5>${location.zip}</h5>`);
+      }
+   });
+
+
+  // function getColor(income) {
+  //   return d > 200000 ? '#0000ff' :
+  //          d > 170000 ? '#1a0fe6' :
+  //          d > 150000  ? '#331fcc' :
+  //          d > 140000  ? '#4c2eb2' :
+  //          d > 130000  ? '#5936a6' :
+  //          d > 120000  ? '#8c5473' :
+  //          d > 110000 ? '#995c66' :
+  //          d > 100000  ? '#b26b4d' :
+  //          d > 90000  ? '#bf7340' :
+  //          d > 80000  ? '#d98226' :
+  //          d > 70000  ? '#f2910d' :
+  //                     '#ff9900';
+  // };
+  
+
+// d3.json("http://127.0.0.1:5000/api/v1.0/demo", function(demoData) {
+  
+  d3.json("/static/merge.json", function(data) {
+    // Creating a geoJSON layer with the retrieved data
+    // var demo = demoData.features
+    L.geoJson(data, {
+      // Style each feature (in this case a neighborhood)
+      style: function(feature) {
+        return {
+          color: "white",
+          // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+          // fillColor: chooseColor(feature.properties.borough),
+          fillColor: "red",
+          fillOpacity: 0.5,
+          weight: 1.5
+        };
+      },
+      // Called on each feature
+      onEachFeature: function(feature, layer) {
+        // Set mouse events to change map styling
+        layer.on({
+          // When a user's mouse touches a map feature, the mouseover event calls this function, that feature's opacity changes to 90% so that it stands out
+          mouseover: function(event) {
+            layer = event.target;
+            layer.setStyle({
+              fillOpacity: 0.9
+            });
+          },
+          // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
+          mouseout: function(event) {
+            layer = event.target;
+            layer.setStyle({
+              fillOpacity: 0.5
+            });
+          },
+          // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
+          click: function(event) {
+            map.fitBounds(event.target.getBounds());
+          }
+        });
+        // Giving each feature a pop-up with information pertinent to it
+        layer.bindPopup("<h1>" + feature.properties.zipcode+ "</h1> <hr> <h2>" + feature.properties.borough + "</h2>");
+  
+      }
+    }).addTo(map);
+  }); 
