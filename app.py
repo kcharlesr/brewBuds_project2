@@ -15,7 +15,7 @@ from flask import Flask, jsonify, render_template
 # Database Setup
 #########################
 #ENGINE
-engine = create_engine("sqlite:///brewBuds.sqlite", echo=False)
+engine = create_engine(r'sqlite:///C:\Users\perki\Desktop\brewBuds_project2\brewBuds.sqlite', echo=False)
 
 
 #BUILD THE TABLES
