@@ -34,5 +34,6 @@ Combined all the data and then 4 columns for each data set that ranked individua
 	2). Leaflet markers (Breweries and Starbucks)
 	3). Scatter plot showing percentage of our key demographic, population per brewery, and Median income.
 
+
 6). The new json library we used slick enhanced the webpage for the clients by providing photograoh visuals that can be scrolled through in the html page.
 
