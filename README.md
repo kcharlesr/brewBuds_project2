@@ -25,6 +25,7 @@ Logic: We have 4 Variables if a zipcode is ideal
 	Population per brewery
 	Key demo 20 -34 
 	Population per starbucks 
+
 If no breweries/no Starbucks assigned a numerical 1 this was to ensure that there was still a result for the per population and this did not significantly alter the ranking system 
 Combined all the data and then 4 columns for each data set that ranked individually. And then aggregated the ranks and then scored the overall zip code based on the aggregate ranks. This then determined the zip code selection. Ranked 1 being the highest desirable 100 being the lowest desirable. 
 
