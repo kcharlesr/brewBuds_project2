@@ -32,7 +32,7 @@ lightmap.addTo(map);
 var overlays = {
   "Brewery": layers.brewery,
   "Starbucks": layers.starbucks,
-  "Zip Codes": layers.zipcodes
+  "Ideal ZIP Code": layers.zipcodes
 };
 
 L.control.layers(null, overlays).addTo(map);
