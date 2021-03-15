@@ -2,12 +2,12 @@
  
 Data Sources:
 Brewery CSV:https://data.world/datafiniti/breweries-brew-pubs-in-the-usa
-Starbucks CSV: https://gist.github.com/dankohn/09e5446feb4a8faea24f - Kevin
-Census/IRS Data:
-https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics-2018-zip-code-data-soi
+Starbucks CSV: https://gist.github.com/dankohn/09e5446feb4a8faea24
+Census/IRS Data:https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics-2018-zip-code-data-soi
 State-ZipCode GeoJSON: 
 https://github.com/OpenDataDE/State-zip-code-GeoJSON
 https://github.com/OpenDataDE/State-zip-code-GeoJSON
+
 Inspiration:
 We are marketing analysts for the “Holy Ale Brewery” we are trying to convince the leaders of this organization that in the next 5 cities we should open our new breweries. Using the data above we will create a dashboard that explains which cities would be an investment opportunity based on population and median household income.
 
