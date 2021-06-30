@@ -57,10 +57,11 @@ We combined all of the data including the 4 columns from each data set that rank
 
 <br>
 
-5. The HTML page created for the data analysis and presentation to our clients visualizes our key points for our presentation:
-	1). GeoJson mapping
-	2). Leaflet markers (Breweries and Starbucks)
-	3). Scatter plot showing percentage of our key demographic, population per brewery, and median income.
+5. The HTML page created for the data analysis and presentation to our clients visualizes our key points for our presentation:<br>
+   
+	1. GeoJson mapping
+	2. Leaflet markers (Breweries and Starbucks)
+	3. Scatter plot showing percentage of our key demographic, population per brewery, and median income.
 
 ![image](https://user-images.githubusercontent.com/73393825/111224574-05ee2500-85b5-11eb-847a-f7566e4b1b12.png)
 
@@ -68,7 +69,7 @@ We combined all of the data including the 4 columns from each data set that rank
 
 <br>
 
-6. We also used a new JSON library, Slick, to enhance the webpage for the clients by providing photo visuals that can be scrolled through in the HTML page.
+1. We also used a new JSON library, Slick, to enhance the webpage for the clients by providing photo visuals that can be scrolled through in the HTML page.
 
 ![image](https://user-images.githubusercontent.com/73393825/111223081-0eddf700-85b3-11eb-8564-c1149d97c3f5.png)
 
